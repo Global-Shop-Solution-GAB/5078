@@ -1,0 +1,796 @@
+Program.Sub.ScreenSU.Start
+Gui.F_CreoBOM..Create
+Gui.F_CreoBOM..Caption("Creo BOM Import")
+Gui.F_CreoBOM..Size(17580,10005)
+Gui.F_CreoBOM..MinX(0)
+Gui.F_CreoBOM..MinY(0)
+Gui.F_CreoBOM..Position(0,0)
+Gui.F_CreoBOM..FontSize(9)
+Gui.F_CreoBOM..BackColor(-2147483633)
+Gui.F_CreoBOM..MousePointer(0)
+Gui.F_CreoBOM..Event(UnLoad,Unload)
+Gui.F_CreoBOM..Event(Resize,ResizeScreen)
+Gui.F_CreoBOM.frameBOM.Create(Frame)
+Gui.F_CreoBOM.frameBOM.Size(17115,6255)
+Gui.F_CreoBOM.frameBOM.Position(120,465)
+Gui.F_CreoBOM.frameBOM.Caption("Imported BOM")
+Gui.F_CreoBOM.frameBOM.FontSize(9)
+Gui.F_CreoBOM.GsGCBOM.Create(GsGridControl)
+Gui.F_CreoBOM.GsGCBOM.Size(16890,5895)
+Gui.F_CreoBOM.GsGCBOM.Position(120,285)
+Gui.F_CreoBOM.GsGCBOM.Parent("frameBOM")
+Gui.F_CreoBOM.GsGCBOM.Event(CellValueChanged,GsGCBOM_CellValueChanged)
+Gui.F_CreoBOM.frameRM.Create(Frame)
+Gui.F_CreoBOM.frameRM.Size(12630,2565)
+Gui.F_CreoBOM.frameRM.Position(4590,6795)
+Gui.F_CreoBOM.frameRM.Caption("List of Raw Materials")
+Gui.F_CreoBOM.frameRM.FontSize(9)
+Gui.F_CreoBOM.GsGCRM.Create(GsGridControl)
+Gui.F_CreoBOM.GsGCRM.Size(12390,2205)
+Gui.F_CreoBOM.GsGCRM.Position(135,255)
+Gui.F_CreoBOM.GsGCRM.Parent("frameRM")
+Gui.F_CreoBOM.cmdOpenBOMFile.Create(Button)
+Gui.F_CreoBOM.cmdOpenBOMFile.Size(1500,525)
+Gui.F_CreoBOM.cmdOpenBOMFile.Position(120,6885)
+Gui.F_CreoBOM.cmdOpenBOMFile.Caption("Open New File")
+Gui.F_CreoBOM.cmdOpenBOMFile.FontSize(9)
+Gui.F_CreoBOM.cmdOpenBOMFile.Event(Click,ImportBOM)
+Gui.F_CreoBOM.lblParent.Create(Label,"Parent",True,675,255,0,120,120,True,0,"Arial",9,-2147483633,0)
+Gui.F_CreoBOM.txtParent.Create(TextBox,"",True,2130,315,0,810,75,True,0,"Arial",9,-2147483643,1)
+Gui.F_CreoBOM.txtParent.Locked(True)
+Gui.F_CreoBOM.lblParentDesc.Create(Label,"Description",True,1020,255,0,3435,120,True,0,"Arial",9,-2147483633,0)
+Gui.F_CreoBOM.txtParentDesc.Create(TextBox,"",True,4380,315,0,4485,75,True,0,"Arial",9,-2147483643,1)
+Gui.F_CreoBOM.txtParentDesc.Locked(True)
+Gui.F_CreoBOM.cmdLoadBOM.Create(Button)
+Gui.F_CreoBOM.cmdLoadBOM.Size(1500,525)
+Gui.F_CreoBOM.cmdLoadBOM.Position(120,7500)
+Gui.F_CreoBOM.cmdLoadBOM.Caption("Upload to GSS")
+Gui.F_CreoBOM.cmdLoadBOM.FontSize(9)
+Gui.F_CreoBOM.cmdLoadBOM.Event(Click,LoadBOM)
+Gui.F_CreoBOM.frameInfo.Create(Frame)
+Gui.F_CreoBOM.frameInfo.Size(2760,2190)
+Gui.F_CreoBOM.frameInfo.Position(1710,6795)
+Gui.F_CreoBOM.frameInfo.Caption("Source")
+Gui.F_CreoBOM.frameInfo.FontSize(9)
+Gui.F_CreoBOM.lblSource.Create(Label,"Label",True,2520,1815,0,120,360,True,0,"Arial",9,-2147483633,0)
+Gui.F_CreoBOM.lblSource.Parent("frameInfo")
+Gui.F_CreoBOM.cmdCompare.Create(Button)
+Gui.F_CreoBOM.cmdCompare.Size(1500,525)
+Gui.F_CreoBOM.cmdCompare.Position(120,8115)
+Gui.F_CreoBOM.cmdCompare.Caption("Compare")
+Gui.F_CreoBOM.cmdCompare.FontSize(9)
+Gui.F_CreoBOM.cmdCompare.Event(Click,CompareBOM)
+Gui.F_CreoBOM.chkIncludeRM.Create(CheckBox)
+Gui.F_CreoBOM.chkIncludeRM.Size(2850,360)
+Gui.F_CreoBOM.chkIncludeRM.Position(9180,60)
+Gui.F_CreoBOM.chkIncludeRM.Caption("Include raw materials in BOM")
+Gui.F_CreoBOM.chkIncludeRM.FontSize(9)
+Gui.F_Compare..Create
+Gui.F_Compare..Caption("BOM Comparison")
+Gui.F_Compare..Size(17535,10695)
+Gui.F_Compare..MinX(0)
+Gui.F_Compare..MinY(0)
+Gui.F_Compare..Position(0,0)
+Gui.F_Compare..FontSize(9)
+Gui.F_Compare..BackColor(-2147483633)
+Gui.F_Compare..MousePointer(0)
+Gui.F_Compare..Event(UnLoad,F_Compare_Unload)
+Gui.F_Compare.frameCreo.Create(Frame)
+Gui.F_Compare.frameCreo.Size(8445,9900)
+Gui.F_Compare.frameCreo.Position(105,105)
+Gui.F_Compare.frameCreo.Caption("Creo BOM")
+Gui.F_Compare.frameCreo.FontSize(9)
+Gui.F_Compare.GsGCCreo.Create(GsGridControl)
+Gui.F_Compare.GsGCCreo.Size(8205,9540)
+Gui.F_Compare.GsGCCreo.Position(120,255)
+Gui.F_Compare.GsGCCreo.Parent("frameCreo")
+Gui.F_Compare.frameGSS.Create(Frame)
+Gui.F_Compare.frameGSS.Size(8445,9900)
+Gui.F_Compare.frameGSS.Position(8745,105)
+Gui.F_Compare.frameGSS.Caption("GSS BOM")
+Gui.F_Compare.frameGSS.FontSize(9)
+Gui.F_Compare.GsGCGSS.Create(GsGridControl)
+Gui.F_Compare.GsGCGSS.Size(8205,9540)
+Gui.F_Compare.GsGCGSS.Position(120,255)
+Gui.F_Compare.GsGCGSS.Parent("frameGSS")
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.fMinHeight.Declare(Float,10005)
+V.Global.fMinWidth.Declare(Float,17580)
+V.Global.fRefHeight.Declare
+V.Global.fRefWidth.Declare
+V.Global.sImportFile.Declare
+V.Global.sParentDesc.Declare
+V.Global.sUM.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.i1.Declare
+V.Local.sIconPath.Declare
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+V.Global.fRefHeight.Set(V.Global.fMinHeight)
+V.Global.fRefWidth.Set(V.Global.fMinWidth)
+
+F.Intrinsic.String.Concat(V.Caller.PluginsDir,"\GAB\GAS\gss2.ico",V.Local.sIconPath)
+Gui.F_CreoBOM..Icon(V.Local.sIconPath)
+
+F.Intrinsic.String.Build("P - Purchase to Stock{0}J - Purchase to Job{0}{0}M - Manufacture to Stock{0}F - Manufacture to Job{0}{0}C - Consign to Stock{0}G - Consign to Job",V.Ambient.NewLine,V.Local.sIconPath)
+Gui.F_CreoBOM.lblSource.Caption(V.Local.sIconPath)
+
+'Build UM list for dropdownlist
+F.Data.DataTable.CreateFromSQL("dtUM","conx","select distinct(code) as UM from um_codes",True)
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtUM.RowCount--,1)
+	F.Intrinsic.Control.If(V.Global.sUM.Trim,=,"")
+		V.Global.sUM.Set(V.DataTable.dtUM(V.Local.i1).UM!FieldValTrim)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0}*!*{1}",V.Global.sUM.Trim,V.DataTable.dtUM(V.Local.i1).UM!FieldValTrim,V.Global.sUM)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+F.Intrinsic.Control.CallSub(importbom)
+Program.Sub.Main.End
+
+Program.Sub.ReadFile.Start
+V.Local.bExist.Declare
+V.Local.bShow.Declare(Boolean,False)
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iQty.Declare
+V.Local.iSeq.Declare
+V.Local.iWidths.Declare
+V.Local.sColumns.Declare
+V.Local.sDesc.Declare
+V.Local.sFile.Declare
+V.Local.sFilename.Declare
+V.Local.sFilter.Declare
+V.Local.sLine.Declare
+V.Local.sMessage.Declare
+V.Local.sParent.Declare
+V.Local.sPart.Declare
+V.Local.sRet.Declare
+V.Local.sRM.Declare
+V.Local.sSource.Declare
+V.Local.sSQL.Declare
+V.Local.sTemp.Declare
+V.Local.sType.Declare
+V.Local.sUM.Declare
+
+F.Intrinsic.Control.If(V.DataTable.dtBOM.Exists,=,True)
+	F.Data.DataTable.Close("dtBOM")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("dtBOM",True)
+F.Data.DataTable.AddColumn("dtBOM","ParentPart","String")
+F.Data.DataTable.AddColumn("dtBOM","Seq","Long")
+F.Data.DataTable.AddColumn("dtBOM","Part","String")
+F.Data.DataTable.AddColumn("dtBOM","Description","String")
+F.Data.DataTable.AddColumn("dtBOM","Qty","Long")
+F.Data.DataTable.AddColumn("dtBOM","UM","String")
+F.Data.DataTable.AddColumn("dtBOM","Source","String")
+F.Data.DataTable.AddColumn("dtBOM","Type","String")
+F.Data.DataTable.AddColumn("dtBOM","PL","String")
+F.Data.DataTable.AddColumn("dtBOM","SourceP","String")
+
+F.Intrinsic.Control.If(V.DataTable.dtPart.Exists,=,True)
+	F.Data.DataTable.Close("dtPart")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("dtPart",True)
+F.Data.DataTable.AddColumn("dtPart","ParentPart","String")
+F.Data.DataTable.AddColumn("dtPart","Part","String")
+F.Data.DataTable.AddColumn("dtPart","Description","String")
+F.Data.DataTable.AddColumn("dtPart","Qty","Float")
+F.Data.DataTable.AddColumn("dtPart","UM","String")
+F.Data.DataTable.AddColumn("dtPart","Source","String")
+
+'Get the UM code for each
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select code from um_codes where ucase(descr) = 'EACH'")
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+	V.Local.sUM.Set("EA")
+F.Intrinsic.Control.Else
+	V.Local.sUM.Set(V.ODBC.conx!rst.FieldValTrim!code)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.UI.InvokeWaitDialog("Reading Creo Import File","Creo BOM Import")
+
+V.Local.sFile.Set(V.Args.sFile)
+F.Intrinsic.String.Split(V.Local.sFile,V.Ambient.NewLine,V.Local.sFile)
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sFile.UBound,1)
+	F.Intrinsic.UI.ChangeWaitStatus("Reading Creo Import File",V.Local.i1,0,V.Local.sFile.UBound)
+	F.Intrinsic.String.Split(V.Local.sFile(V.Local.i1)," ",V.Local.sLine)
+	F.Intrinsic.Control.If(V.Local.sLine(0).Trim,=,"Assembly")
+		'Start with the parent
+		V.Local.sParent.Set(V.Local.sLine(1).Trim)
+		V.Global.sParentDesc.Set("")
+		F.Intrinsic.Control.For(V.Local.i2,2,V.Local.sLine.UBound,1)
+			F.Intrinsic.Control.If(V.Local.sLine(V.Local.i2).Trim,=,"contains:")
+				F.Intrinsic.Control.ExitFor(V.Local.i2)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.Global.sParentDesc.Trim,=,"")
+					V.Global.sParentDesc.Set(V.Local.sLine(V.Local.i2).Trim)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("{0} {1}",V.Global.sParentDesc,V.Local.sLine(V.Local.i2).Trim,V.Global.sParentDesc)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(V.Local.i2)
+		Gui.F_CreoBOM.txtParent.Text(V.Local.sParent)
+		Gui.F_CreoBOM.txtParentDesc.Text(V.Global.sParentDesc)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+		F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		'Find the starting point of level 1 components
+		F.Intrinsic.Control.DoUntil(V.Local.sTemp.Trim,=,"-----")
+			F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+			F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		F.Intrinsic.Control.Loop
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+		F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		V.Local.iSeq.Set(1)
+		F.Intrinsic.Control.DoUntil(V.Local.sTemp.Trim,=,"=====")
+			'Get every datum for level 1 component
+			F.Intrinsic.String.IsInString(V.Local.sFile(V.Local.i1),"Sub-Assembly",True,V.Local.bExist)
+			F.Intrinsic.Control.If(V.Local.bExist,=,True)
+				F.Intrinsic.String.Split(V.Local.sFile(V.Local.i1),"Sub-Assembly",V.Local.sLine)
+				V.Local.sType.Set("Sub-Assembly")
+				V.Local.sSource.Set("M")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Split(V.Local.sFile(V.Local.i1),"Part",V.Local.sLine)
+				V.Local.sType.Set("Part")
+				V.Local.sSource.Set("P")
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Left(V.Local.sLine(1).Trim,15,V.Local.sPart)
+			F.Intrinsic.String.Mid(V.Local.sLine(1).Trim,15,V.Local.sDesc)
+			F.Data.DataTable.AddRow("dtBOM","Seq",V.Local.iSeq,"UM",V.Local.sUM,"Qty",V.Local.sLine(0),"Part",V.Local.sPart.Trim,"Description",V.Local.sDesc.Trim,"Type",V.Local.sType.Trim,"ParentPart",V.Local.sParent.Trim,"Source",V.Local.sSource.Trim,"SourceP",V.Local.sSource.Trim)
+			F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+			F.Intrinsic.Math.Add(V.Local.iSeq,1,V.Local.iSeq)
+			F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		F.Intrinsic.Control.Loop
+	F.Intrinsic.Control.ElseIf(V.Local.sLine(0).Trim,=,"Sub-Assembly")
+		V.Local.sParent.Set(V.Local.sLine(1).Trim)
+		V.Local.sParent.Set(V.Local.sLine(1).Trim)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+		F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		'Find the starting point of level components
+		F.Intrinsic.Control.DoUntil(V.Local.sTemp.Trim,=,"-----")
+			F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+			F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		F.Intrinsic.Control.Loop
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+		F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		V.Local.iSeq.Set(1)
+		F.Intrinsic.Control.DoUntil(V.Local.sTemp.Trim,=,"=====")
+			'Get every datum for the children component
+			F.Intrinsic.String.IsInString(V.Local.sFile(V.Local.i1),"Sub-Assembly",True,V.Local.bExist)
+			F.Intrinsic.Control.If(V.Local.bExist,=,True)
+				F.Intrinsic.String.Split(V.Local.sFile(V.Local.i1),"Sub-Assembly",V.Local.sLine)
+				V.Local.sType.Set("Sub-Assembly")
+				V.Local.sSource.Set("M")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Split(V.Local.sFile(V.Local.i1),"Part",V.Local.sLine)
+				V.Local.sType.Set("Part")
+				V.Local.sSource.Set("P")
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Left(V.Local.sLine(1).Trim,15,V.Local.sPart)
+			F.Intrinsic.String.Mid(V.Local.sLine(1).Trim,15,V.Local.sDesc)
+			F.Data.DataTable.AddRow("dtBOM","Seq",V.Local.iSeq,"UM",V.Local.sUM.Trim,"Qty",V.Local.sLine(0),"Part",V.Local.sPart.Trim,"Description",V.Local.sDesc.Trim,"Type",V.Local.sType.Trim,"ParentPart",V.Local.sParent.Trim,"Source",V.Local.sSource.Trim,"SourceP",V.Local.sSource.Trim)
+			F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+			F.Intrinsic.Math.Add(V.Local.iSeq,1,V.Local.iSeq)
+			F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+		F.Intrinsic.Control.Loop
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.IsInString(V.Local.sFile(V.Local.i1).Trim,"Summary of parts for assembly",True,V.Local.bExist)
+		'Part list
+		F.Intrinsic.Control.If(V.Local.bExist,=,True)
+			F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+			F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+			'Find the starting point of part list
+			F.Intrinsic.Control.DoUntil(V.Local.sTemp.Trim,=,"-----")
+				F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+				F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+			F.Intrinsic.Control.Loop
+			F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+			F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+			F.Intrinsic.Control.DoUntil(V.Local.sTemp.Trim,=,"=====")
+				F.Intrinsic.String.IsInString(V.Local.sFile(V.Local.i1),"ZPU",True,V.Local.bExist)
+				F.Intrinsic.Control.If(V.Local.bExist,=,False)
+					'Manufactured parts
+					F.Intrinsic.String.Mid(V.Local.sFile(V.Local.i1),7,15,V.Local.sParent)
+					F.Intrinsic.String.Mid(V.Local.sFile(V.Local.i1),74,15,V.Local.sPart)
+					F.Intrinsic.String.Mid(V.Local.sFile(V.Local.i1),90,28,V.Local.sDesc)
+					F.Intrinsic.Control.If(V.Local.sPart.Trim,<>,"")
+						'It's not an empty part
+						F.Intrinsic.String.Mid(V.Local.sFile(V.Local.i1),118,8,V.Local.sTemp)
+						'Retrieve UM from inventory_mstr
+						F.Intrinsic.String.Build("select um_inventory as UM from inventory_mstr where part = '{0}'",V.Local.sPart.Trim,V.Local.sSQL)
+						F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+						F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+							V.Local.sRM.Set(V.Local.sUM)
+						F.Intrinsic.Control.Else
+							V.Local.sRM.Set(V.ODBC.conx!rst.FieldValTrim!UM)
+						F.Intrinsic.Control.EndIf
+						F.ODBC.conx!rst.Close
+						'Retrieve source from inventory_mst2
+						F.Intrinsic.String.Build("select code_source from inventory_mst2 where part = '{0}'",V.Local.sPart.Trim,V.Local.sSQL)
+						F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+						F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+							V.Local.sSource.Set("P")
+						F.Intrinsic.Control.Else
+							V.Local.sSource.Set(V.ODBC.conx!rst.FieldValTrim!code_source)
+						F.Intrinsic.Control.EndIf
+						F.ODBC.conx!rst.Close
+						F.Data.DataTable.AddRow("dtPart","ParentPart",V.Local.sParent.Trim,"Part",V.Local.sPart.Trim,"Description",V.Local.sDesc.Trim,"Qty",V.Local.sTemp.Trim,"UM",V.Local.sRM.Trim,"Source",V.Local.sSource.Trim)
+						F.Intrinsic.String.Build("Part = '{0}'",V.Local.sParent.Trim,V.Local.sFilter)
+						F.Data.DataTable.Select("dtBOM",V.Local.sFilter,V.Local.sRet)
+						F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+						F.Intrinsic.Control.For(V.Local.i2,0,V.Local.sRet.UBound,1)
+							F.Data.DataTable.SetValue("dtBOM",V.Local.sRet(V.Local.i2),"Source","M")
+						F.Intrinsic.Control.Next(V.Local.i2)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i1)
+				F.Intrinsic.String.Left(V.Local.sFile(V.Local.i1),5,V.Local.sTemp)
+			F.Intrinsic.Control.Loop
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+'Fill up PL from inventory master
+F.Data.Dictionary.CreateFromSQL("dicPL","conx","select part, product_line from v_inventory_mstr")
+F.Data.Dictionary.SetDefaultReturn("dicPL","")
+F.Data.DataTable.FillFromDictionary("dtBOM","dicPL","Part","PL")
+F.Data.Dictionary.Close("dicPL")
+
+gui.F_CreoBOM.GsGCBOM.AddGridviewFromDatatable("gvBOM","dtBOM")
+gui.F_CreoBOM.GsGCBOM.MainView("gvBOM")
+V.Local.sSource.Set("P*!*M*!*F")
+'V.Local.sSource.Set("P*!*J*!*M*!*F*!*C*!*G")
+F.Intrinsic.String.Split("ParentPart*!*Seq*!*Part*!*Description*!*Qty*!*UM*!*Source*!*Type*!*PL","*!*",V.Local.sColumns)
+F.Intrinsic.String.Split("120*!*60*!*120*!*240*!*100*!*60*!*60*!*100*!*60","*!*",V.Local.iWidths)
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sColumns.UBound,1)
+	Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM",V.Local.sColumns(V.Local.i1).Trim,"HeaderHAlignment","Center")
+	Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM",V.Local.sColumns(V.Local.i1).Trim,"HeaderFontBold",True)
+	Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM",V.Local.sColumns(V.Local.i1).Trim,"MinWidth",V.Local.iWidths(V.Local.i1))
+F.Intrinsic.Control.Next(V.Local.i1)
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","Seq","CellHAlignment","Center")
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","UM","CellHAlignment","Center")
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","Source","CellHAlignment","Center")
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","Type","CellHAlignment","Center")
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","PL","CellHAlignment","Center")
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","ParentPart","Caption","Parent")
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","Qty","Caption","Quantity")
+Gui.F_CreoBOM.GsGCBOM.ColumnEdit("gvBOM","Source","Dropdownlist",V.Local.sSource)
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","Source","ReadOnly",False)
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","Source","AllowEdit",True)
+Gui.F_CreoBOM.GsGCBOM.ColumnEdit("gvBOM","UM","Dropdownlist",V.Global.sUM)
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","UM","ReadOnly",False)
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","UM","AllowEdit",True)
+Gui.F_CreoBOM.GsGCBOM.SetColumnProperty("gvBOM","SourceP","Visible",False)
+
+Gui.F_CreoBOM.GsGCBOM.SetGridviewProperty("gvBOM","ShowGroupPanel",True)
+
+gui.F_CreoBOM.GsGCRM.AddGridviewFromDatatable("gvPart","dtPart")
+gui.F_CreoBOM.GsGCRM.MainView("gvPart")
+F.Intrinsic.String.Split("ParentPart*!*Part*!*Description*!*Qty*!*UM*!*Source","*!*",V.Local.sColumns)
+F.Intrinsic.String.Split("120*!*120*!*240*!*100*!*60*!*60","*!*",V.Local.iWidths)
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sColumns.UBound,1)
+	Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart",V.Local.sColumns(V.Local.i1).Trim,"HeaderHAlignment","Center")
+	Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart",V.Local.sColumns(V.Local.i1).Trim,"HeaderFontBold",True)
+	Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart",V.Local.sColumns(V.Local.i1).Trim,"MinWidth",V.Local.iWidths(V.Local.i1))
+F.Intrinsic.Control.Next(V.Local.i1)
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","UM","CellHAlignment","Center")
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","Source","CellHAlignment","Center")
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","ParentPart","Caption","Parent")
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","Qty","Caption","Quantity")
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","Qty","DisplayCustomNumeric","##,###,##0.0000")
+Gui.F_CreoBOM.GsGCRM.ColumnEdit("gvPart","Source","Dropdownlist",V.Local.sSource)
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","Source","ReadOnly",False)
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","Source","AllowEdit",True)
+Gui.F_CreoBOM.GsGCRM.ColumnEdit("gvPart","UM","Dropdownlist",V.Global.sUM)
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","UM","ReadOnly",False)
+Gui.F_CreoBOM.GsGCRM.SetColumnProperty("gvPart","UM","AllowEdit",True)
+
+Gui.F_CreoBOM.chkIncludeRM.Value(1)
+
+''Check if BOM has been uploaded into BOM master
+'V.Local.sParent.Set(V.Screen.F_CreoBOM!txtParent.Text)
+'F.Intrinsic.String.Build("select parent from bom_mstr where parent = '{0}'",V.Local.sParent.Trim,V.Local.sSQL)
+'F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+'F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+'	Gui.F_CreoBOM.cmdCompare.Visible(True)
+'F.Intrinsic.Control.Else
+'	Gui.F_CreoBOM.cmdCompare.Visible(False)
+'F.Intrinsic.Control.EndIf
+'F.ODBC.conx!rst.Close
+
+F.Intrinsic.UI.CloseWaitDialog
+
+gui.F_CreoBOM..Show
+Program.Sub.ReadFile.End
+
+Program.Sub.ImportBOM.Start
+V.Local.sFile.Declare
+V.Local.sFilename.Declare
+
+F.Intrinsic.UI.ShowOpenFileDialog("","","",V.Local.sFilename)
+
+F.Intrinsic.Control.If(V.Local.sFilename,<>,"***CANCEL***")
+	F.Intrinsic.File.File2String(V.Local.sFilename,V.Local.sFile)
+	Gui.F_CreoBOM.GsGCBOM.Visible(False)
+	Gui.F_CreoBOM.GsGCRM.Visible(False)
+	F.Intrinsic.Control.CallSub(readfile,"sFile",V.Local.sFile)
+	Gui.F_CreoBOM.GsGCBOM.Visible(True)
+	Gui.F_CreoBOM.GsGCRM.Visible(True)
+F.Intrinsic.Control.EndIf
+Program.Sub.ImportBOM.End
+
+Program.Sub.Unload.Start
+F.Data.DataTable.Close("dtUM")
+
+F.Intrinsic.Control.If(V.DataTable.dtBOM.Exists,=,True)
+	F.Data.DataTable.Close("dtBOM")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtPart.Exists,=,True)
+	F.Data.DataTable.Close("dtPart")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.LoadBOM.Start
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.i3.Declare
+V.Local.iRet.Declare
+V.Local.iSeq.Declare
+V.Local.sBOMBkp.Declare
+V.Local.sBOMFile.Declare
+V.Local.sCategory.Declare
+V.Local.sCurrent.Declare
+V.Local.sDesc.Declare
+V.Local.sFilter.Declare
+V.Local.sImportLine.Declare
+V.Local.sParent.Declare
+V.Local.sPart.Declare
+V.Local.sPrevious.Declare
+V.Local.sQty.Declare
+V.Local.sRet.Declare
+V.Local.sRev.Declare
+V.Local.sRMImportFile.Declare(String,"")
+V.Local.sSeq.Declare
+V.Local.sSource.Declare
+V.Local.sSQL.Declare
+V.Local.sUM.Declare
+
+'Check if BOM has been uploaded into BOM master
+V.Local.sParent.Set(V.Screen.F_CreoBOM!txtParent.Text)
+F.Intrinsic.String.Build("select parent from bom_mstr where parent = '{0}'",V.Local.sParent.Trim,V.Local.sSQL)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+	F.Intrinsic.UI.Msgbox("BOM has been uploaded previously. Continue?","Creo BOM Import",4,V.Local.iRet)
+	F.Intrinsic.Control.If(V.Local.iRet,=,7)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.Control.If(V.DataTable.dtBOM.RowCount,>,0)
+	F.Intrinsic.UI.InvokeWaitDialog("Generating GSS BOM import file","Creo BOM Import")
+	'Parent sequence 0000
+	V.Local.sPrevious.Set(V.Local.sParent.Trim)
+	F.Intrinsic.String.RPad(V.Local.sParent," ",20,V.Local.sParent)
+	V.Local.sSeq.Set("0000")
+	F.Intrinsic.String.RPad("1"," ",16,V.Local.sQty)
+	V.Local.sPart.Set(V.Local.sParent)
+	'Get the UM code for each
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select code from um_codes where ucase(descr) = 'EACH'")
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		V.Local.sUM.Set("EA")
+	F.Intrinsic.Control.Else
+		V.Local.sUM.Set(V.ODBC.conx!rst.FieldValTrim!code)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+	F.Intrinsic.String.RPad(V.Local.sUM," ",2,V.Local.sUM)
+	F.Intrinsic.String.RPad(V.Global.sParentDesc," ",30,V.Local.sDesc)
+	V.Local.sRev.Set("   ")
+	V.Local.sCategory.Set("N")
+	V.Local.sSource.Set("M")
+	F.Intrinsic.String.Build("{0}{1}{2}{3}{4}{5}{6}{7}{8}",V.Local.sParent,V.Local.sSeq,V.Local.sQty,V.Local.sPart,V.Local.sUM,V.Local.sDesc,V.Local.sRev,V.Local.sCategory,V.Local.sSource,V.Global.sImportFile)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBOM.RowCount--,1)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+		F.Intrinsic.UI.ChangeWaitStatus("Generating GSS BOM import file",V.Local.i2,1,V.DataTable.dtBOM.RowCount)
+		V.Local.sCurrent.Set(V.DataTable.dtBOM(V.Local.i1).ParentPart!FieldValTrim)
+		F.Intrinsic.String.Build("select parent from bom_mstr where parent = '{0}'",V.Local.sCurrent.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+		F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+			F.Intrinsic.Control.If(V.Local.sCurrent.Trim,<>,V.Local.sPrevious.Trim)
+				'Parent number changes, create a line for seq 0000
+				F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).ParentPart!FieldValTrim," ",20,V.Local.sParent)
+				V.Local.sSeq.Set("0000")
+				F.Intrinsic.String.RPad("1"," ",16,V.Local.sQty)
+				V.Local.sPart.Set(V.Local.sParent)
+				'Get UM, Description, and Source by searching the parent as part number
+				F.Intrinsic.String.Build("Part = '{0}'",V.Local.sParent.Trim,V.Local.sFilter)
+				F.Data.DataTable.Select("dtBOM",V.Local.sFilter,V.Local.sRet)
+				F.Intrinsic.string.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.sRet(0)).UM!FieldValTrim," ",2,V.Local.sUM)
+				F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.sRet(0)).Description!FieldValTrim," ",30,V.Local.sDesc)
+				V.Local.sRev.Set("   ")
+				V.Local.sCategory.Set("N")
+				F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.sRet(0)).Source!FieldValTrim," ",1,V.Local.sSource)
+				F.Intrinsic.String.Build("{0}{1}{2}{3}{4}{5}{6}{7}{8}",V.Local.sParent,V.Local.sSeq,V.Local.sQty,V.Local.sPart,V.Local.sUM,V.Local.sDesc,V.Local.sRev,V.Local.sCategory,V.Local.sSource,V.Local.sImportLine)
+				F.Intrinsic.String.Build("{0}{1}{2}",V.Global.sImportFile,V.Ambient.NewLine,V.Local.sImportLine,V.Global.sImportFile)
+			F.Intrinsic.Control.EndIf
+			'Update the import file with the next sequence
+			F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).ParentPart!FieldValTrim," ",20,V.Local.sParent)
+			F.Intrinsic.String.LPad(V.DataTable.dtBOM(V.Local.i1).Seq!FieldValLong,"0",4,V.Local.sSeq)
+			F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).Qty!FieldValLong,"0",4,V.Local.sQty)
+			F.Intrinsic.String.LPad(V.DataTable.dtBOM(V.Local.i1).Qty!FieldValLong,"0",16,V.Local.sQty)
+			F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).Part!FieldValTrim," ",20,V.Local.sPart)
+			F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).UM!FieldValTrim," ",2,V.Local.sUM)
+			F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).Description!FieldValTrim," ",30,V.Local.sDesc)
+			V.Local.sRev.Set("   ")
+			V.Local.sCategory.Set("N")
+			F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).Source!FieldValTrim," ",1,V.Local.sSource)
+			F.Intrinsic.String.Build("{0}{1}{2}{3}{4}{5}{6}{7}{8}",V.Local.sParent,V.Local.sSeq,V.Local.sQty,V.Local.sPart,V.Local.sUM,V.Local.sDesc,V.Local.sRev,V.Local.sCategory,V.Local.sSource,V.Local.sImportLine)
+			F.Intrinsic.String.Build("{0}{1}{2}",V.Global.sImportFile,V.Ambient.NewLine,V.Local.sImportLine,V.Global.sImportFile)
+			V.Local.sPrevious.Set(V.Local.sCurrent.Trim)
+			'If raw materials to be included in BOM, check for part
+			F.Intrinsic.Control.If(V.Screen.F_CreoBOM!chkIncludeRM.Value,=,1)
+				F.Intrinsic.String.Build("ParentPart = '{0}'",V.DataTable.dtBOM(V.Local.i1).Part!FieldValTrim,V.Local.sFilter)
+				F.Data.DataTable.Select("dtPart",V.Local.sFilter,V.Local.sRet)
+				F.Intrinsic.Control.If(V.Local.sRet,<>,"***NORETURN***")
+					F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+					'Create 0000 sequence
+					F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).Part!FieldValTrim," ",20,V.Local.sParent)
+					V.Local.sSeq.Set("0000")
+					F.Intrinsic.String.RPad("1"," ",16,V.Local.sQty)
+					V.Local.sPart.Set(V.Local.sParent)
+					F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).UM!FieldValTrim," ",2,V.Local.sUM)
+					F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).Description!FieldValTrim," ",30,V.Local.sDesc)
+					V.Local.sRev.Set("   ")
+					V.Local.sCategory.Set("N")
+					F.Intrinsic.String.RPad(V.DataTable.dtBOM(V.Local.i1).Source!FieldValTrim," ",1,V.Local.sSource)
+					F.Intrinsic.String.Build("{0}{1}{2}{3}{4}{5}{6}{7}{8}",V.Local.sParent,V.Local.sSeq,V.Local.sQty,V.Local.sPart,V.Local.sUM,V.Local.sDesc,V.Local.sRev,V.Local.sCategory,V.Local.sSource,V.Local.sImportLine)
+					F.Intrinsic.Control.If(V.Local.sRMImportFile.Trim,=,"")
+						V.Local.sRMImportFile.Set(V.Local.sImportLine)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sRMImportFile,V.Ambient.NewLine,V.Local.sImportLine,V.Local.sRMImportFile)
+					F.Intrinsic.Control.EndIf
+					'initialize the sequence
+					V.Local.iSeq.Set(1)
+					'Add raw materials to the next sequence
+					F.Intrinsic.Control.For(V.Local.i3,0,V.Local.sRet.UBound,1)
+						F.Intrinsic.String.LPad(V.Local.iSeq,"0",4,V.Local.sSeq)
+						F.Intrinsic.String.LPad(V.DataTable.dtPart(V.Local.sRet(V.Local.i3)).Qty!FieldValFloat,"0",16,V.Local.sQty)
+						F.Intrinsic.String.RPad(V.DataTable.dtPart(V.Local.sRet(V.Local.i3)).Part!FieldValTrim," ",20,V.Local.sPart)
+						F.Intrinsic.String.RPad(V.DataTable.dtPart(V.Local.sRet(V.Local.i3)).UM!FieldValTrim," ",2,V.Local.sUM)
+						F.Intrinsic.String.RPad(V.DataTable.dtPart(V.Local.sRet(V.Local.i3)).Description!FieldValTrim," ",30,V.Local.sDesc)
+						V.Local.sRev.Set("   ")
+						V.Local.sCategory.Set("N")
+						F.Intrinsic.String.RPad(V.DataTable.dtPart(V.Local.sRet(V.Local.i3)).Source!FieldValTrim," ",1,V.Local.sSource)
+						F.Intrinsic.String.Build("{0}{1}{2}{3}{4}{5}{6}{7}{8}",V.Local.sParent,V.Local.sSeq,V.Local.sQty,V.Local.sPart,V.Local.sUM,V.Local.sDesc,V.Local.sRev,V.Local.sCategory,V.Local.sSource,V.Local.sImportLine)
+						F.Intrinsic.Control.If(V.Local.sRMImportFile.Trim,=,"")
+							V.Local.sRMImportFile.Set(V.Local.sImportLine)
+						F.Intrinsic.Control.Else
+							F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sRMImportFile,V.Ambient.NewLine,V.Local.sImportLine,V.Local.sRMImportFile)
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.Math.Add(V.Local.iSeq,1,V.Local.iSeq)
+					F.Intrinsic.Control.Next(V.Local.i3)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		F.ODBC.conx!rst.Close
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	'If raw materials to be included in BOM
+	F.Intrinsic.Control.If(V.Screen.F_CreoBOM!chkIncludeRM.Value,=,1)
+		F.Intrinsic.String.Build("{0}{1}{2}",V.Global.sImportFile,V.Ambient.NewLine,V.Local.sRMImportFile,V.Global.sImportFile)
+	F.Intrinsic.Control.EndIf
+	
+	' Write text to the files, and send back filenames, to be loaded
+	' BOM file will be bomhdr.txt.
+	F.Intrinsic.String.Build("{0}\{1}",V.Caller.FilesDir,"bomhdr.txt",V.Local.sBOMFile)
+	F.Intrinsic.File.String2File(V.Local.sBOMFile,V.Global.sImportFile)
+	F.Intrinsic.String.Build("{0}\{1}",V.Caller.FilesDir,"bomhdr.bkp",V.Local.sBOMBkp)
+	F.Intrinsic.File.String2File(V.Local.sBOMbkp,V.Global.sImportFile)
+	
+	F.Intrinsic.UI.ChangeWaitStatus("Uploading data into GSS")
+	' load BOM Text first
+	F.Intrinsic.Control.If(V.Caller.GSSVersion,<,2016.1)
+		F.Intrinsic.Task.LaunchGSSSync("xsolidwk","-c",V.Caller.CompanyCode)
+	F.Intrinsic.Control.Else
+		F.Global.General.CallWrapperSync(50,"xsolidwk")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.UI.CloseWaitDialog
+	
+	F.Intrinsic.UI.Msgbox("Finished Uploading into GSS","Creo BOM Import")
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("Load BOM Failed: Empty BOM","Creo BOM Import")
+F.Intrinsic.Control.EndIf
+Program.Sub.LoadBOM.End
+
+Program.Sub.ResizeScreen.Start
+V.Local.fdX.Declare
+V.Local.fdY.Declare
+V.Local.fH.Declare
+V.Local.fNewHeight.Declare
+V.Local.fNewWidth.Declare
+V.Local.fNewX.Declare
+V.Local.fNewY.Declare
+V.Local.fW.Declare
+'Limit minimum screen size
+F.Intrinsic.Control.If(V.Screen.F_CreoBOM.Width,<,V.Global.fMinWidth)
+F.Intrinsic.Control.Andif(V.Screen.F_CreoBOM.Height,<,V.Global.fMinHeight)
+	Gui.F_CreoBOM..Size(V.Global.fMinWidth,V.Global.fMinHeight)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.If(V.Screen.F_CreoBOM.Width,<,V.Global.fMinWidth)
+		Gui.F_CreoBOM..Size(V.Global.fMinWidth,V.Screen.F_CreoBOM.Height)
+	F.Intrinsic.Control.ElseIf(V.Screen.F_CreoBOM.Height,<,V.Global.fMinHeight)
+		Gui.F_CreoBOM..Size(V.Screen.F_CreoBOM.Width,V.Global.fMinHeight)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+'Get the ratio of screen size change
+F.Intrinsic.Math.Div(V.Screen.F_CreoBOM.Width,V.Global.fRefWidth,V.Local.fdX)
+F.Intrinsic.Math.div(V.Screen.F_CreoBOM.Height,V.Global.fRefHeight,V.Local.fdY)
+'Get GsGCBOM new width and height (reference)
+F.Intrinsic.Math.Mult(V.Screen.F_CreoBOM!GsGCBOM.Width,V.Local.fdX,V.Local.fNewWidth)
+F.Intrinsic.Math.Mult(V.Screen.F_CreoBOM!GsGCBOM.Height,V.Local.fdY,V.Local.fNewHeight)
+'Get the change in distance
+'Update the new size of frameBOM and GsGCBOM
+Gui.F_CreoBOM.GsGCBOM.Size(V.Local.fNewWidth,V.Local.fNewHeight)
+F.Intrinsic.Math.Mult(V.Screen.F_CreoBOM!frameBOM.Width,V.Local.fdX,V.Local.fNewWidth)
+F.Intrinsic.Math.Mult(V.Screen.F_CreoBOM!frameBOM.Height,V.Local.fdY,V.Local.fNewHeight)
+F.Intrinsic.Math.Sub(V.Local.fNewHeight,V.Screen.F_CreoBOM!frameBOM.Height,V.Local.fH)
+Gui.F_CreoBOM.frameBOM.Size(V.Local.fNewWidth,V.Local.fNewHeight)
+'Move the position of elements below GsGCBOM based on the change of GsGCBOM height
+F.Intrinsic.Math.Add(V.Screen.F_CreoBOM!cmdOpenBOMFile.Top,V.Local.fH,V.Local.fNewY)
+Gui.F_CreoBOM.cmdOpenBOMFile.Position(V.Screen.F_CreoBOM!cmdOpenBOMFile.Left,V.Local.fNewY)
+F.Intrinsic.Math.Add(V.Screen.F_CreoBOM!cmdLoadBOM.Top,V.Local.fH,V.Local.fNewY)
+Gui.F_CreoBOM.cmdLoadBOM.Position(V.Screen.F_CreoBOM!cmdLoadBOM.Left,V.Local.fNewY)
+F.Intrinsic.Math.Add(V.Screen.F_CreoBOM!cmdCompare.Top,V.Local.fH,V.Local.fNewY)
+Gui.F_CreoBOM.cmdCompare.Position(V.Screen.F_CreoBOM!cmdCompare.Left,V.Local.fNewY)
+F.Intrinsic.Math.Add(V.Screen.F_CreoBOM!frameInfo.Top,V.Local.fH,V.Local.fNewY)
+Gui.F_CreoBOM.frameInfo.Position(V.Screen.F_CreoBOM!frameInfo.Left,V.Local.fNewY)
+F.Intrinsic.Math.Add(V.Screen.F_CreoBOM!frameRM.Top,V.Local.fH,V.Local.fNewY)
+Gui.F_CreoBOM.frameRM.Position(V.Screen.F_CreoBOM!frameRM.Left,V.Local.fNewY)
+'Update the new size of frameRM and GsGCRM
+F.Intrinsic.Math.Add(V.Screen.F_CreoBOM!frameBOM.Left,V.Screen.F_CreoBOM!frameBOM.Width,V.Local.fW)
+F.Intrinsic.Math.Sub(V.Local.fW,V.Screen.F_CreoBOM!frameRM.Left,V.Local.fNewWidth)
+F.Intrinsic.Math.Div(V.Local.fNewWidth,V.Screen.F_CreoBOM!frameRM.Width,V.Local.fdX)
+F.Intrinsic.Math.Mult(V.Screen.F_CreoBOM!frameRM.Height,V.Local.fdY,V.Local.fNewHeight)
+Gui.F_CreoBOM.frameRM.Size(V.Local.fNewWidth,V.Local.fNewHeight)
+F.Intrinsic.Math.Mult(V.Screen.F_CreoBOM!GsGCRM.Width,V.Local.fdX,V.Local.fNewWidth)
+F.Intrinsic.Math.Mult(V.Screen.F_CreoBOM!GsGCRM.Height,V.Local.fdY,V.Local.fNewHeight)
+Gui.F_CreoBOM.GsGCRM.Size(V.Local.fNewWidth,V.Local.fNewHeight)
+V.Global.fRefHeight.Set(V.Screen.F_CreoBOM.Height)
+V.Global.fRefWidth.Set(V.Screen.F_CreoBOM.Width)
+Program.Sub.ResizeScreen.End
+
+Program.Sub.F_Compare_Unload.Start
+Gui.F_Compare..Visible(False)
+Gui.F_CreoBOM..Show
+Program.Sub.F_Compare_Unload.End
+
+Program.Sub.CompareBOM.Start
+V.Local.bChange.Declare
+V.Local.i1.Declare
+V.Local.sColumns.Declare
+V.Local.sFilter.Declare
+V.Local.sFormat.Declare
+V.Local.sParent.Declare
+V.Local.sPrevious.Declare
+V.Local.sRet.Declare
+V.Local.sSeq.Declare
+V.Local.sSQL.Declare
+
+F.Intrinsic.Control.If(V.DataTable.dtBOMC.Exists,=,True)
+	F.Data.DataTable.Close("dtBOMC")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtCreo.Exists,=,True)
+	F.Data.DataTable.Close("dtCreo")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtGSS.Exists,=,True)
+	F.Data.DataTable.Close("dtGSS")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Split("ParentPart*!*Seq*!*Part*!*Description*!*Qty*!*UM*!*Source","*!*",V.Local.sColumns)
+F.Intrinsic.String.Split("String*!*String*!*String*!*String*!*Long*!*String*!*String","*!*",V.Local.sFormat)
+
+F.Data.DataTable.Create("dtBOMC")
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sColumns.UBound,1)
+	F.Data.DataTable.AddColumn("dtBOMC",V.Local.sColumns(V.Local.i1).Trim,V.Local.sFormat(V.Local.i1).Trim)
+F.Intrinsic.Control.Next(V.Local.i1)
+
+F.Data.DataTable.Create("dtCreo",True)
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sColumns.UBound,1)
+	F.Data.DataTable.AddColumn("dtCreo",V.Local.sColumns(V.Local.i1).Trim,V.Local.sFormat(V.Local.i1).Trim)
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.AddColumn("dtCreo","Delete","Boolean")
+F.Data.DataTable.AddColumn("dtCreo","Change","Boolean")
+
+F.Data.DataTable.Create("dtGSS",True)
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sColumns.UBound,1)
+	F.Data.DataTable.AddColumn("dtGSS",V.Local.sColumns(V.Local.i1).Trim,V.Local.sFormat(V.Local.i1).Trim)
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.AddColumn("dtGSS","Add","Boolean")
+F.Data.DataTable.AddColumn("dtGSS","Change","Boolean")
+
+'Comparing Creo to GSS
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBOM.RowCount--,1)
+	F.Intrinsic.String.LPad(V.DataTable.dtBOM(V.Local.i1).Seq!FieldValLong,"0",4,V.Local.sSeq)
+	V.Local.bChange.Set(False)
+	F.Intrinsic.String.Build("select Part, Quantity, um_inventory as UM, Source from bom_mstr where parent = '{0}' and part like '{1}%'",V.DataTable.dtBOM(V.Local.i1).ParentPart!FieldValTrim,V.DataTable.dtBOM(V.Local.i1).Part!FieldValTrim,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		'Part does not exist anymore in BOM
+		F.Data.DataTable.AddRow("dtCreo","ParentPart",V.DataTable.dtBOM(V.Local.i1).ParentPart!FieldValTrim,"Seq",V.Local.sSeq.Trim,"Part",V.DataTable.dtBOM(V.Local.i1).Part!FieldValTrim,"Description",V.DataTable.dtBOM(V.Local.i1).Description!FieldValTrim,"Qty",V.DataTable.dtBOM(V.Local.i1).Qty!FieldValLong,"UM",V.DataTable.dtBOM(V.Local.i1).UM!FieldValTrim,"Source",V.DataTable.dtBOM(V.Local.i1).Source!FieldValTrim,"Delete",True,"Change",False)
+	F.Intrinsic.Control.Else
+		'Part exists in BOM, check for changes
+		F.Intrinsic.Control.If(V.DataTable.dtBOM(V.Local.i1).Part!FieldValTrim,<>,V.ODBC.conx!rst.FieldValTrim!Part)
+			V.Local.bChange.Set(True)
+		F.Intrinsic.Control.ElseIf(V.DataTable.dtBOM(V.Local.i1).Qty!FieldValLong,<>,V.ODBC.conx!rst.FieldValLong!Quantity)
+			V.Local.bChange.Set(True)
+		F.Intrinsic.Control.ElseIf(V.DataTable.dtBOM(V.Local.i1).UM!FieldValTrim,<>,V.ODBC.conx!rst.FieldValTrim!UM)
+			V.Local.bChange.Set(True)
+		F.Intrinsic.Control.ElseIf(V.DataTable.dtBOM(V.Local.i1).Source!FieldValTrim,<>,V.ODBC.conx!rst.FieldValTrim!Source)
+			V.Local.bChange.Set(True)
+		F.Intrinsic.Control.EndIf
+		
+		F.Intrinsic.Control.If(V.Local.bChange,=,True)
+			F.Data.DataTable.AddRow("dtCreo","ParentPart",V.DataTable.dtBOM(V.Local.i1).ParentPart!FieldValTrim,"Seq",V.Local.sSeq.Trim,"Part",V.DataTable.dtBOM(V.Local.i1).Part!FieldValTrim,"Description",V.DataTable.dtBOM(V.Local.i1).Description!FieldValTrim,"Qty",V.DataTable.dtBOM(V.Local.i1).Qty!FieldValLong,"UM",V.DataTable.dtBOM(V.Local.i1).UM!FieldValTrim,"Source",V.DataTable.dtBOM(V.Local.i1).Source!FieldValTrim,"Delete",False,"Change",True)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+F.Intrinsic.Control.Next(V.Local.i1)
+
+'Comparing GSS to Creo
+V.Local.sParent.Set(V.Screen.F_CreoBOM!txtParent.Text)
+F.Intrinsic.Control.CallSub(comparebomgss,"sParent",V.Local.sParent.Trim)
+Program.Sub.CompareBOM.End
+
+Program.Sub.CompareBOMGSS.Start
+V.Local.i1.Declare
+V.Local.sFilter.Declare
+V.Local.sParent.Declare
+V.Local.sPart.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+V.Local.sParent.Set(V.Args.sParent)
+F.Intrinsic.String.Build("select sequence_bom as Seq, part as Part, quantity as Qty, um_inventory as UM, Source from bom_mstr where parent = '{0}' and sequence_bom <> '0000' order by sequence_bom",V.Local.sParent.Trim,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtBTemp","conx",V.Local.sSQL)
+F.Intrinsic.Control.If(V.DataTable.dtBTemp.RowCount,>,0)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBTemp.RowCount--,1)
+		F.Intrinsic.String.Left(V.DataTable.dtBTemp(V.Local.i1).Part!FieldValTrim,17,V.Local.sPart)
+		F.Intrinsic.String.Build("ParentPart = '{0}' and Part LIKE '{1}*'",V.Local.sParent.Trim,V.Local.sPart.Trim,V.Local.sFilter)
+		F.Data.DataTable.Select("dtBOM",V.Local.sFilter,V.Local.sRet)
+		F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+			
+		F.Intrinsic.Control.Else
+		
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.EndIf
+F.Data.DataTable.Close("dtBTemp")
+Program.Sub.CompareBOMGSS.End
+
+Program.Sub.GsGCBOM_CellValueChanged.Start
+F.Intrinsic.Control.If(V.Args.Column,=,"Source")
+	
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCBOM_CellValueChanged.End
+
+Program.Sub.Comments.Start
+${$0$}$PTC Creo BOM Import$}$MHERTANTO$}$22/2/2018 2:42:17 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This program is to be used to review inventory position on a selected date range. The dashboard shows the beginning balance, incoming quantity, outgoing quantity, and ending balance. In addition, the dashboard displays the transaction history during the selected date range.
+Program.Sub.Comments.End
